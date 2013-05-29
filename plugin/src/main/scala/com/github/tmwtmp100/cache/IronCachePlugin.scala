@@ -37,12 +37,8 @@ class IronCachePlugin(app: Application) extends CachePlugin{
     def get(key: String): Option[String] = {
       val ironGet = WS.url(address + key).withHeaders(auth)
         .get().map { response =>
-            play.Logger.info("Iron Cache Get \n" + response.body + "\n" + response.status + "\n" + response.json \ "value")
-            //val value = Option((response.json \ "value").as[String])
-            //play.Logger.info("Get's value here: "  + value.getOrElse("wrong"))
             (response.json \ "value").asOpt[String]
         }
-      //play.Logger.info("Get's Value:" + value.getOrElse("wrong_again"))
       Await.result(ironGet, Duration.Inf)
     }
 
@@ -74,14 +70,13 @@ class IronCachePlugin(app: Application) extends CachePlugin{
 
   override def enabled: Boolean = {
     val relatedKeys = List("iron.token", "iron.project.id")
-    play.Logger.info("Iron Cache Enabled function contains " + relatedKeys.size)
     val isEnabled: Boolean = {
       relatedKeys.count { key =>
         app.configuration.getString(key).isInstanceOf[Some[String]]
       } == relatedKeys.size
     }
 
-    play.Logger.info("Plugin is enabled? " + isEnabled)
-    true
+    play.Logger.info("Iron Cache Plugin is enabled? " + isEnabled)
+    isEnabled
   }
 }
