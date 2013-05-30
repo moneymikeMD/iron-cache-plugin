@@ -18,7 +18,7 @@ To build this currently, clone this repo and then build this project using SBT.
     play compile package
     cp plugin/target/scala-2.10/iron-cache-plugin_2.10-1.0-SNAPSHOT.jar <play project dir>/lib
 
-How to Use
+Setup
 ---
 
 To use, first the default cache has to be disabled. Then your specific iron.io credentials must also be added.
@@ -42,9 +42,35 @@ in the conf folder of your Play application. Add this line:
 
     1501:com.github.tmwtmp100.cache.IronCachePlugin
 
+How to Use
+---
+
+The standard cache interface built into Play is now enabled and can be used normally.
+
+    # Get a value
+    Cache.get("key")
+
+    # Set a value, set a value with an expiration time in milliseconds
+    Cache.set("key", "value")
+    Cache.set("key", "value", 3600)
+
+    # Remove an item from the cache
+    Cache.remove("key")
+
+In addition, Iron Cache has a few more capabilities built into its API. To use those:
+
+    import com.github.tmwtmp100.cache.IronCachePlugin
+
+    # Increment an integer value (Use negative values to decrement)
+    play.api.Play.current.plugin[IronCachePlugin].get.increment("key", amount_to_increment)
+
+    # Delete all items from the cache
+    play.api.Play.current.plugin[IronCachePlugin].get.clearCache()
+
 Version
 ---
 
+0.2 Added LOTS of error checking. Implemented and tested the Iron specific functions.
 0.1 Initial Version. Consider it very rough (no error checking).
 
 Contact
