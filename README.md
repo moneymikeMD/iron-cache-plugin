@@ -1,4 +1,4 @@
-Iron Cache Plugin for Play 2.x (Experimental)
+Iron Cache Plugin for Play 2.x
 ===
 
 Requirements
@@ -47,6 +47,7 @@ How to Use
 
 The standard cache interface built into Play is now enabled and can be used normally.
 
+```scala
     # Get a value
     Cache.get("key")
 
@@ -56,9 +57,10 @@ The standard cache interface built into Play is now enabled and can be used norm
 
     # Remove an item from the cache
     Cache.remove("key")
-
+```
 In addition, Iron Cache has a few more capabilities built into its API. To use those:
 
+```scala
     import com.github.tmwtmp100.cache.IronCachePlugin
 
     # Increment an integer value (Use negative values to decrement)
@@ -66,11 +68,13 @@ In addition, Iron Cache has a few more capabilities built into its API. To use t
 
     # Delete all items from the cache
     play.api.Play.current.plugin[IronCachePlugin].get.clearCache()
+```
 
 Version
 ---
 
 0.2 Added LOTS of error checking. Implemented and tested the Iron specific functions.
+
 0.1 Initial Version. Consider it very rough (no error checking).
 
 Contact
