@@ -87,6 +87,8 @@ In addition, Iron Cache has a few more capabilities built into its API. To use t
 Version
 ---
 
+1.0 First Stable Version. Added Maven repository for easy use.
+
 0.2 Added LOTS of error checking. Implemented and tested the Iron specific functions.
 
 0.1 Initial Version. Consider it very rough (no error checking).
