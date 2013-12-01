@@ -24,7 +24,7 @@ Add the following dependency to your Play project:
 Build
 ---
 
-To build this currently, clone this repo and then build this project using SBT.
+To build from source, clone this repo and then build this project using SBT.
 
     git clone https://github.com/tmwtmp100/iron-cache-plugin.git iron-cache
     cd iron-cache
