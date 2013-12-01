@@ -8,8 +8,6 @@ import play.api.libs.json._
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
-import play.api.libs.json.JsString
-import scala.Some
 
 class IronCachePlugin(app: Application) extends CachePlugin{
   val hostAddress = app.configuration.getString("iron.cache.host").getOrElse("cache-aws-us-east-1")
@@ -55,7 +53,7 @@ class IronCachePlugin(app: Application) extends CachePlugin{
             response.status match {
               case 200 => (response.json \ "value").asOpt[String]
               case _ => {
-                play.Logger.warn(appName + " could not retrieve key " + key + ":" + response.json \ "msg")
+                play.Logger.debug(appName + " could not retrieve key " + key + ":" + response.json \ "msg")
                 None
               }
             }

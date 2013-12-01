@@ -8,14 +8,12 @@ object ApplicationBuild extends Build {
   val appVersion      = "1.0-SNAPSHOT"
 
   val appDependencies = Seq(
-    // Add your project dependencies here,
-    jdbc,
-    anorm
+    "com.github.tmwtmp100" %% "iron-cache-plugin" % "1.0"
   )
 
 
   val main = play.Project(appName, appVersion, appDependencies).settings(
-    // Add your own project settings here      
+    resolvers += "TMWTMP100 Repository" at "https://raw.github.com/tmwtmp100/maven/master/releases"
   )
 
 }

@@ -4,8 +4,22 @@ Iron Cache Plugin for Play 2.x
 Requirements
 ---
 
-* Tested with [Play 2.1.0][play]
+* Tested with [Play 2.1.x][play]
 * [Iron.io][iron] credentials
+
+Usage
+---
+
+Add the following dependency to your Play project:
+
+```scala
+  val appDependencies = Seq(
+    "com.github.tmwtmp100" %% "iron-cache-plugin" % "1.0"
+  )
+  val main = play.Project(appName, appVersion, appDependencies).settings(
+    resolvers += "TMWTMP100 Repository" at "https://raw.github.com/tmwtmp100/maven/master/releases"
+  )
+```
 
 Build
 ---
