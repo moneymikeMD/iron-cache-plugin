@@ -3,7 +3,7 @@ package controllers
 import play.api._
 import play.api.mvc._
 import play.api.Play.current
-import cache.Cache
+import play.api.cache.Cache
 import com.github.tmwtmp100.cache.IronCachePlugin
 
 object Application extends Controller {
@@ -11,7 +11,7 @@ object Application extends Controller {
   private val ironPlugin = play.api.Play.current.plugin[IronCachePlugin].get
   
   def index = Action {
-    Ok(views.html.index("Your new application is ready."))
+    Ok(views.html.index.render("Your new application is ready."))
   }
 
   def cacheSetExpiration(value: String) = Action {

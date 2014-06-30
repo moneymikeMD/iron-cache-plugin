@@ -8,6 +8,7 @@ import play.api.libs.json._
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
+import play.api.Play.current
 
 class IronCachePlugin(app: Application) extends CachePlugin{
   val hostAddress = app.configuration.getString("iron.cache.host").getOrElse("cache-aws-us-east-1")
