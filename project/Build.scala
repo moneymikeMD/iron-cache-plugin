@@ -29,7 +29,8 @@ object MinimumBuild extends Build {
 //    publishTo := Some(Resolver.file("file",  new File( "path/to/my/maven-repo/releases" )) ),
     publishMavenStyle := true,
     organization := "com.github.tmwtmp100",
-    libraryDependencies ++= Seq(cache % "provided", ws % "provided","com.typesafe.play" %% "play" % buildVersion % "provided")
+    libraryDependencies ++= Seq(cache % "provided", ws % "provided","com.typesafe.play" %% "play" % buildVersion % "provided"),
+    resolvers += "Typesafe repository" at "http://repo.typesafe.com/typesafe/releases/"
   )
 
   lazy val sampleProject = Project("iron-cache-sample", file("sample")).enablePlugins(play.PlayScala).settings(
