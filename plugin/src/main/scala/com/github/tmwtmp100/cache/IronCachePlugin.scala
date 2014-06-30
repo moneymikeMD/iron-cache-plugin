@@ -127,7 +127,7 @@ class IronCachePlugin(app: Application) extends CachePlugin {
     	case _ => play.Logger.warn(appName + " is not enabled due to missing required properties. " +
                                   "Check to see if the token and project ID have been set.")   
     }
-
+    //TODO fixe implicite Application use of WS during plugin enabled cause stack overflow
     /*isEnabled match {
       case true => {
         play.Logger.info(appName + " has been enabled.")
