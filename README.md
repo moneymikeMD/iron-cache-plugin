@@ -10,17 +10,21 @@ Requirements
 Usage
 ---
 
-Add the following dependency to your Play project:
+Add the following dependency to your build.sbt:
 
 ```scala
-  val appDependencies = Seq(
-    "com.github.tmwtmp100" %% "iron-cache-plugin" % "1.0"
-  )
-  val main = play.Project(appName, appVersion, appDependencies).settings(
-    resolvers += "TMWTMP100 Repository" at "https://raw.github.com/tmwtmp100/maven/master/releases"
-  )
+  lazy val ironCachePlugin = ProjectRef(uri("git://github.com/pussinboots/iron-cache-plugin.git"),"iron-cache-plugin")
+
+  lazy val root = (project in file(".")).dependsOn(ironCachePlugin)
 ```
 
+or for the Build.scala
+
+```scala
+  lazy val ironCachePlugin = ProjectRef(uri("git://github.com/pussinboots/iron-cache-plugin.git"),"iron-cache-plugin")
+
+  val main = Project(appName, file (".")).dependsOn(ironCachePlugin)
+```
 Build
 ---
 
@@ -29,9 +33,8 @@ To build from source, clone this repo and then build this project using SBT.
     git clone https://github.com/tmwtmp100/iron-cache-plugin.git iron-cache
     cd iron-cache
     # Assuming play is on your path
-    play compile package
-    cp plugin/target/scala-2.10/iron-cache-plugin_2.10-1.0-SNAPSHOT.jar <play project dir>/lib
-
+    sbt test
+    
 Setup
 ---
 

@@ -1,17 +1,24 @@
 import sbt._
 import Keys._
-
+import play.Play.autoImport._
+import PlayKeys._
+    
 object MinimumBuild extends Build {
 
   val appName         = "iron-cache-plugin"
   val pluginVersion   = "1.0"
-  val buildVersion    = "2.1.5"
+  val buildVersion    = "2.3.0"
 
   val baseSettings = Defaults.defaultSettings ++ Seq(
     scalaVersion := "2.10.0"
   )
+      
+  val appDeps = Seq(
+    ws,
+    cache
+  )
 
-  lazy val plugin = Project(appName, file("plugin")).settings(baseSettings: _*).settings(
+  lazy val plugin = Project(appName, file("plugin")).settings(
     version := pluginVersion,
     publishTo <<= version { (v: String) =>
       if (v.trim.endsWith("SNAPSHOT"))
@@ -22,15 +29,17 @@ object MinimumBuild extends Build {
 //    publishTo := Some(Resolver.file("file",  new File( "path/to/my/maven-repo/releases" )) ),
     publishMavenStyle := true,
     organization := "com.github.tmwtmp100",
-    libraryDependencies += "play" %% "play" % buildVersion % "provided"
+    libraryDependencies ++= Seq(cache % "provided", ws % "provided","com.typesafe.play" %% "play" % buildVersion % "provided"),
+    resolvers += "Typesafe repository" at "http://repo.typesafe.com/typesafe/releases/"
   )
 
-  lazy val sampleProject = play.Project("iron-cache-sample", pluginVersion, path = file("sample")).settings(baseSettings: _*).settings(
+  lazy val sampleProject = Project("iron-cache-sample", file("sample")).enablePlugins(play.PlayScala).settings(
     publishLocal := {},
-    publish := {}
-  )
+    publish := {},
+    libraryDependencies ++= appDeps
+  ).dependsOn(plugin % "compile->compile;test->test")
 
-  lazy val root = Project("root", base = file(".")).settings(baseSettings: _*).settings(
+  lazy val root = Project("root", base = file(".")).enablePlugins(play.PlayScala).settings(
     publishLocal := {},
     publish := {}
   ).aggregate(plugin, sampleProject)

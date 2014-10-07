@@ -4,12 +4,13 @@ import play.api.cache.{CacheAPI, CachePlugin}
 import play.api.Application
 import play.api.libs.ws.WS
 import play.api.libs.json._
+import play.core.StaticApplication
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
 
-class IronCachePlugin(app: Application) extends CachePlugin{
+class IronCachePlugin(app: Application) extends CachePlugin {
   val hostAddress = app.configuration.getString("iron.cache.host").getOrElse("cache-aws-us-east-1")
   val cacheName   = app.configuration.getString("iron.cache.name").getOrElse("cache")
   val oAuthToken  = app.configuration.getString("iron.token").get
@@ -23,6 +24,7 @@ class IronCachePlugin(app: Application) extends CachePlugin{
   private val auth = ("Authorization", "OAuth " + oAuthToken)
   private val jsonCT = ("Content-Type","application/json")
   private val appName = "Iron Cache Plugin"
+  implicit def current: Application = app
 
   val api = new CacheAPI {
 
@@ -105,8 +107,28 @@ class IronCachePlugin(app: Application) extends CachePlugin{
         app.configuration.getString(key).isInstanceOf[Some[String]]
       } == relatedKeys.size
     }
-
     isEnabled match {
+        case true => {
+        play.Logger.info(appName + " has been enabled.")
+        // Now check to see if the service is reachable
+        import java.net.{URLConnection, URL, HttpURLConnection}
+        
+        val u = new URL(projectAddress)
+        val conn = u.openConnection().asInstanceOf[HttpURLConnection]
+        conn.setRequestProperty("Authorization",  s"OAuth $oAuthToken")
+        //conn.setConnectTimeout(HttpRequestTimeout)
+        conn.connect
+        val status = conn.getResponseCode
+        if(status > 500){
+            play.Logger.error("Iron Cache service is unresponsive. The plugin will not work.")
+            throw new IllegalAccessException()
+        }
+      }
+    	case _ => play.Logger.warn(appName + " is not enabled due to missing required properties. " +
+                                  "Check to see if the token and project ID have been set.")   
+    }
+    //TODO fixe implicite Application use of WS during plugin enabled cause stack overflow
+    /*isEnabled match {
       case true => {
         play.Logger.info(appName + " has been enabled.")
         // Now check to see if the service is reachable
@@ -119,7 +141,7 @@ class IronCachePlugin(app: Application) extends CachePlugin{
       }
       case _ => play.Logger.warn(appName + " is not enabled due to missing required properties. " +
                                   "Check to see if the token and project ID have been set.")
-    }
+    }*/
     isEnabled
   }
 }
