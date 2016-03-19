@@ -1,5 +1,8 @@
+This repo has moved! Please go here for current version https://github.com/dipuce/iron-cache-play2
+---
+
 Iron Cache Plugin for Play 2.x
-===
+---
 
 Requirements
 ---
